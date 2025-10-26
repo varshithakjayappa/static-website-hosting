@@ -23,4 +23,6 @@ It includes the following key components:
 <img width="882" height="547" alt="image" src="https://github.com/user-attachments/assets/a498f5d8-fad8-436f-9906-2ac60dba75d6" />
 
 ## Final Deployed Website
+<img width="882" height="547" alt="image" src="https://github.com/varshithakjayappa/static-website-hosting/blob/main/website/deployed-website.png
+" />
 
