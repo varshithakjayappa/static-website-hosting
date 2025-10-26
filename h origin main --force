@@ -1,0 +1,1504 @@
+[1mdiff --git a/README.md b/README.md[m
+[1mnew file mode 100644[m
+[1mindex 0000000..d6a6db0[m
+[1m--- /dev/null[m
+[1m+++ b/README.md[m
+[36m@@ -0,0 +1,26 @@[m
+[32m+[m[32m# Static Website Hosting on AWS using Terraform[m
+[32m+[m
+[32m+[m[32mA fully automated **static website hosting** setup built with **Terraform** and **AWS**.[m[41m  [m
+[32m+[m[32mThis project provisions an end-to-end infrastructure for hosting a static website (e.g., `thedevlearn.site`) using **S3**, **CloudFront**, **Route53**, and **ACM**.[m
+[32m+[m
+[32m+[m[32m---[m
+[32m+[m
+[32m+[m[32m## Project Overview[m
+[32m+[m
+[32m+[m[32mThis project demonstrates Infrastructure as Code (IaC) using **Terraform** to deploy a **secure, globally distributed static website** on AWS.[m[41m  [m
+[32m+[m[32mIt includes the following key components:[m
+[32m+[m
+[32m+[m[32m- **S3 Bucket** – Hosts static website content.[m
+[32m+[m[32m- **CloudFront (CDN)** – Distributes content globally with HTTPS and low latency.[m
+[32m+[m[32m- **Route53** – Manages the custom domain and DNS records.[m
+[32m+[m[32m- **ACM (AWS Certificate Manager)** – Provides SSL/TLS certificates for secure HTTPS.[m
+[32m+[m[32m- **Terraform Modules** – Modular design for reusability and clarity.[m
+[32m+[m
+[32m+[m[32m---[m
+[32m+[m
+[32m+[m[32m## Architecture Diagram[m
+[32m+[m
+[32m+[m[32m<img width="882" height="547" alt="image" src="https://github.com/user-attachments/assets/a498f5d8-fad8-436f-9906-2ac60dba75d6" />[m
+[32m+[m
+[32m+[m[32m## Final Deployed Website[m
+[32m+[m
+[1mdiff --git a/website/images/computer-desk-stickers.jpg b/images/computer-desk-stickers.jpg[m
+[1msimilarity index 100%[m
+[1mrename from website/images/computer-desk-stickers.jpg[m
+[1mrename to images/computer-desk-stickers.jpg[m
+[1mdiff --git a/website/images/curved-display-pinky-girl.jpg b/images/curved-display-pinky-girl.jpg[m
+[1msimilarity index 100%[m
+[1mrename from website/images/curved-display-pinky-girl.jpg[m
+[1mrename to images/curved-display-pinky-girl.jpg[m
+[1mdiff --git a/website/images/dashboard-interfaces-transparent-displays.jpg b/images/dashboard-interfaces-transparent-displays.jpg[m
+[1msimilarity index 100%[m
+[1mrename from website/images/dashboard-interfaces-transparent-displays.jpg[m
+[1mrename to images/dashboard-interfaces-transparent-displays.jpg[m
+[1mdiff --git a/website/images/marketing-strategy-women.jpg b/images/marketing-strategy-women.jpg[m
+[1msimilarity index 100%[m
+[1mrename from website/images/marketing-strategy-women.jpg[m
+[1mrename to images/marketing-strategy-women.jpg[m
+[1mdiff --git a/website/images/portfolio-website-girl.jpg b/images/portfolio-website-girl.jpg[m
+[1msimilarity index 100%[m
+[1mrename from website/images/portfolio-website-girl.jpg[m
+[1mrename to images/portfolio-website-girl.jpg[m
+[1mdiff --git a/website/images/smiling-girl-computer-desktop.jpg b/images/smiling-girl-computer-desktop.jpg[m
+[1msimilarity index 100%[m
+[1mrename from website/images/smiling-girl-computer-desktop.jpg[m
+[1mrename to images/smiling-girl-computer-desktop.jpg[m
+[1mdiff --git a/website/images/working-business-women.jpg b/images/working-business-women.jpg[m
+[1msimilarity index 100%[m
+[1mrename from website/images/working-business-women.jpg[m
+[1mrename to images/working-business-women.jpg[m
+[1mdiff --git a/website/index.html b/index.html[m
+[1msimilarity index 100%[m
+[1mrename from website/index.html[m
+[1mrename to index.html[m
+[1mdiff --git a/website/templatemo-personal-javascripts.js b/templatemo-personal-javascripts.js[m
+[1msimilarity index 100%[m
+[1mrename from website/templatemo-personal-javascripts.js[m
+[1mrename to templatemo-personal-javascripts.js[m
+[1mdiff --git a/website/templatemo-personal-style.css b/templatemo-personal-style.css[m
+[1msimilarity index 100%[m
+[1mrename from website/templatemo-personal-style.css[m
+[1mrename to templatemo-personal-style.css[m
+[1mdiff --git a/terraform/.terraform.lock.hcl b/terraform/.terraform.lock.hcl[m
+[1mdeleted file mode 100644[m
+[1mindex eacc548..0000000[m
+[1m--- a/terraform/.terraform.lock.hcl[m
+[1m+++ /dev/null[m
+[36m@@ -1,25 +0,0 @@[m
+[31m-# This file is maintained automatically by "terraform init".[m
+[31m-# Manual edits may be lost in future updates.[m
+[31m-[m
+[31m-provider "registry.terraform.io/hashicorp/aws" {[m
+[31m-  version     = "6.18.0"[m
+[31m-  constraints = ">= 5.0.0"[m
+[31m-  hashes = [[m
+[31m-    "h1:kYe4gKHOceVoJE3tShRYRdHRD3FTJPkIE5mRrejTrBI=",[m
+[31m-    "zh:0f22732930b4f51e345a2273cd92bd419a33d07bb6add096be09771eb391ed0e",[m
+[31m-    "zh:164582e9be87e6ac2765d414269439ee2bc6f5a831e0d57d204e88006bce6cf7",[m
+[31m-    "zh:47b0b230d100a270f5cb5a4ed7b2b0b3caef66cfd407617da558318279a8bb1b",[m
+[31m-    "zh:73ac86ba28ec32357abbfd60742b9cdebfda59f65161f64f8246de1eaca45f38",[m
+[31m-    "zh:7c68d3a83da55bf63972d50c4c5a6759e0c44ed74aa7fb3d70dd7ef1850cab34",[m
+[31m-    "zh:8b0873c78e62e7930f2d0f9f232cacb6e3b34e6e4ec41989d43c591529a3f9d7",[m
+[31m-    "zh:8e8017c67317811339fed4a5fe2568b025bdd3aeaad4e16186fbb24393d09d2d",[m
+[31m-    "zh:9b12af85486a96aedd8d7984b0ff811a4b42e3d88dad1a3fb4c0b580d04fa425",[m
+[31m-    "zh:ae7cc2d08ab9c6ced8291a7521ab3783d4e55cf4e18a36c8a487c6dfd3fb064e",[m
+[31m-    "zh:ce0ccfed27f03d7366ba4a199ded19f9cc47b8a8a47922263b29eb9d4b42ce66",[m
+[31m-    "zh:d165703f775c3f38891a53451fc2c11c68bd26262506aeb5354d8a75cabdfc3d",[m
+[31m-    "zh:dc57c8e2b1307bfc05bc4b525de00ada58ca14b7a1737c969413833f4db50fc6",[m
+[31m-    "zh:df09c6125eb353e4fe5ba73c16c88617a1c4b41c7fca81bd257884966d942b54",[m
+[31m-    "zh:df9c94ed15d88b921876c9cd52942693743d5b0b5b9650bae5498117a44aae4e",[m
+[31m-    "zh:fbcb0c7a5aff9eb794093c94fd98989739f0e0d377a6e8a15b4910703c13e228",[m
+[31m-  ][m
+[31m-}[m
+[1mdiff --git a/terraform/.terraform/modules/modules.json b/terraform/.terraform/modules/modules.json[m
+[1mdeleted file mode 100644[m
+[1mindex 8715dff..0000000[m
+[1m--- a/terraform/.terraform/modules/modules.json[m
+[1m+++ /dev/null[m
+[36m@@ -1 +0,0 @@[m
+[31m-{"Modules":[{"Key":"","Source":"","Dir":"."},{"Key":"acm","Source":"./Modules/acm","Dir":"Modules/acm"},{"Key":"cloudfront","Source":"./Modules/cloudfront","Dir":"Modules/cloudfront"},{"Key":"route53","Source":"./Modules/route53","Dir":"Modules/route53"},{"Key":"s3_bucket","Source":"./Modules/s3-bucket","Dir":"Modules/s3-bucket"}]}[m
+\ No newline at end of file[m
+[1mdiff --git a/terraform/.terraform/providers/registry.terraform.io/hashicorp/aws/6.18.0/linux_amd64/LICENSE.txt b/terraform/.terraform/providers/registry.terraform.io/hashicorp/aws/6.18.0/linux_amd64/LICENSE.txt[m
+[1mdeleted file mode 100644[m
+[1mindex b9ac071..0000000[m
+[1m--- a/terraform/.terraform/providers/registry.terraform.io/hashicorp/aws/6.18.0/linux_amd64/LICENSE.txt[m
+[1m+++ /dev/null[m
+[36m@@ -1,375 +0,0 @@[m
+[31m-Copyright (c) 2017 HashiCorp, Inc.[m
+[31m-[m
+[31m-Mozilla Public License Version 2.0[m
+[31m-==================================[m
+[31m-[m
+[31m-1. Definitions[m
+[31m---------------[m
+[31m-[m
+[31m-1.1. "Contributor"[m
+[31m-    means each individual or legal entity that creates, contributes to[m
+[31m-    the creation of, or owns Covered Software.[m
+[31m-[m
+[31m-1.2. "Contributor Version"[m
+[31m-    means the combination of the Contributions of others (if any) used[m
+[31m-    by a Contributor and that particular Contributor's Contribution.[m
+[31m-[m
+[31m-1.3. "Contribution"[m
+[31m-    means Covered Software of a particular Contributor.[m
+[31m-[m
+[31m-1.4. "Covered Software"[m
+[31m-    means Source Code Form to which the initial Contributor has attached[m
+[31m-    the notice in Exhibit A, the Executable Form of such Source Code[m
+[31m-    Form, and Modifications of such Source Code Form, in each case[m
+[31m-    including portions thereof.[m
+[31m-[m
+[31m-1.5. "Incompatible With Secondary Licenses"[m
+[31m-    means[m
+[31m-[m
+[31m-    (a) that the initial Contributor has attached the notice described[m
+[31m-        in Exhibit B to the Covered Software; or[m
+[31m-[m
+[31m-    (b) that the Covered Software was made available under the terms of[m
+[31m-        version 1.1 or earlier of the License, but not also under the[m
+[31m-        terms of a Secondary License.[m
+[31m-[m
+[31m-1.6. "Executable Form"[m
+[31m-    means any form of the work other than Source Code Form.[m
+[31m-[m
+[31m-1.7. "Larger Work"[m
+[31m-    means a work that combines Covered Software with other material, in[m
+[31m-    a separate file or files, that is not Covered Software.[m
+[31m-[m
+[31m-1.8. "License"[m
+[31m-    means this document.[m
+[31m-[m
+[31m-1.9. "Licensable"[m
+[31m-    means having the right to grant, to the maximum extent possible,[m
+[31m-    whether at the time of the initial grant or subsequently, any and[m
+[31m-    all of the rights conveyed by this License.[m
+[31m-[m
+[31m-1.10. "Modifications"[m
+[31m-    means any of the following:[m
+[31m-[m
+[31m-    (a) any file in Source Code Form that results from an addition to,[m
+[31m-        deletion from, or modification of the contents of Covered[m
+[31m-        Software; or[m
+[31m-[m
+[31m-    (b) any new file in Source Code Form that contains any Covered[m
+[31m-        Software.[m
+[31m-[m
+[31m-1.11. "Patent Claims" of a Contributor[m
+[31m-    means any patent claim(s), including without limitation, method,[m
+[31m-    process, and apparatus claims, in any patent Licensable by such[m
+[31m-    Contributor that would be infringed, but for the grant of the[m
+[31m-    License, by the making, using, selling, offering for sale, having[m
+[31m-    made, import, or transfer of either its Contributions or its[m
+[31m-    Contributor Version.[m
+[31m-[m
+[31m-1.12. "Secondary License"[m
+[31m-    means either the GNU General Public License, Version 2.0, the GNU[m
+[31m-    Lesser General Public License, Version 2.1, the GNU Affero General[m
+[31m-    Public License, Version 3.0, or any later versions of those[m
+[31m-    licenses.[m
+[31m-[m
+[31m-1.13. "Source Code Form"[m
+[31m-    means the form of the work preferred for making modifications.[m
+[31m-[m
+[31m-1.14. "You" (or "Your")[m
+[31m-    means an individual or a legal entity exercising rights under this[m
+[31m-    License. For legal entities, "You" includes any entity that[m
+[31m-    controls, is controlled by, or is under common control with You. For[m
+[31m-    purposes of this definition, "control" means (a) the power, direct[m
+[31m-    or indirect, to cause the direction or management of such entity,[m
+[31m-    whether by contract or otherwise, or (b) ownership of more than[m
+[31m-    fifty percent (50%) of the outstanding shares or beneficial[m
+[31m-    ownership of such entity.[m
+[31m-[m
+[31m-2. License Grants and Conditions[m
+[31m---------------------------------[m
+[31m-[m
+[31m-2.1. Grants[m
+[31m-[m
+[31m-Each Contributor hereby grants You a world-wide, royalty-free,[m
+[31m-non-exclusive license:[m
+[31m-[m
+[31m-(a) under intellectual property rights (other than patent or trademark)[m
+[31m-    Licensable by such Contributor to use, reproduce, make available,[m
+[31m-    modify, display, perform, distribute, and otherwise exploit its[m
+[31m-    Contributions, either on an unmodified basis, with Modifications, or[m
+[31m-    as part of a Larger Work; and[m
+[31m-[m
+[31m-(b) under Patent Claims of such Contributor to make, use, sell, offer[m
+[31m-    for sale, have made, import, and otherwise transfer either its[m
+[31m-    Contributions or its Contributor Version.[m
+[31m-[m
+[31m-2.2. Effective Date[m
+[31m-[m
+[31m-The licenses granted in Section 2.1 with respect to any Contribution[m
+[31m-become effective for each Contribution on the date the Contributor first[m
+[31m-distributes such Contribution.[m
+[31m-[m
+[31m-2.3. Limitations on Grant Scope[m
+[31m-[m
+[31m-The licenses granted in this Section 2 are the only rights granted under[m
+[31m-this License. No additional rights or licenses will be implied from the[m
+[31m-distribution or licensing of Covered Software under this License.[m
+[31m-Notwithstanding Section 2.1(b) above, no patent license is granted by a[m
+[31m-Contributor:[m
+[31m-[m
+[31m-(a) for any code that a Contributor has removed from Covered Software;[m
+[31m-    or[m
+[31m-[m
+[31m-(b) for infringements caused by: (i) Your and any other third party's[m
+[31m-    modifications of Covered Software, or (ii) the combination of its[m
+[31m-    Contributions with other software (except as part of its Contributor[m
+[31m-    Version); or[m
+[31m-[m
+[31m-(c) under Patent Claims infringed by Covered Software in the absence of[m
+[31m-    its Contributions.[m
+[31m-[m
+[31m-This License does not grant any rights in the trademarks, service marks,[m
+[31m-or logos of any Contributor (except as may be necessary to comply with[m
+[31m-the notice requirements in Section 3.4).[m
+[31m-[m
+[31m-2.4. Subsequent Licenses[m
+[31m-[m
+[31m-No Contributor makes additional grants as a result of Your choice to[m
+[31m-distribute the Covered Software under a subsequent version of this[m
+[31m-License (see Section 10.2) or under the terms of a Secondary License (if[m
+[31m-permitted under the terms of Section 3.3).[m
+[31m-[m
+[31m-2.5. Representation[m
+[31m-[m
+[31m-Each Contributor represents that the Contributor believes its[m
+[31m-Contributions are its original creation(s) or it has sufficient rights[m
+[31m-to grant the rights to its Contributions conveyed by this License.[m
+[31m-[m
+[31m-2.6. Fair Use[m
+[31m-[m
+[31m-This License is not intended to limit any rights You have under[m
+[31m-applicable copyright doctrines of fair use, fair dealing, or other[m
+[31m-equivalents.[m
+[31m-[m
+[31m-2.7. Conditions[m
+[31m-[m
+[31m-Sections 3.1, 3.2, 3.3, and 3.4 are conditions of the licenses granted[m
+[31m-in Section 2.1.[m
+[31m-[m
+[31m-3. Responsibilities[m
+[31m--------------------[m
+[31m-[m
+[31m-3.1. Distribution of Source Form[m
+[31m-[m
+[31m-All distribution of Covered Software in Source Code Form, including any[m
+[31m-Modifications that You create or to which You contribute, must be under[m
+[31m-the terms of this License. You must inform recipients that the Source[m
+[31m-Code Form of the Covered Software is governed by the terms of this[m
+[31m-License, and how they can obtain a copy of this License. You may not[m
+[31m-attempt to alter or restrict the recipients' rights in the Source Code[m
+[31m-Form.[m
+[31m-[m
+[31m-3.2. Distribution of Executable Form[m
+[31m-[m
+[31m-If You distribute Covered Software in Executable Form then:[m
+[31m-[m
+[31m-(a) such Covered Software must also be made available in Source Code[m
+[31m-    Form, as described in Section 3.1, and You must inform recipients of[m
+[31m-    the Executable Form how they can obtain a copy of such Source Code[m
+[31m-    Form by reasonable means in a timely manner, at a charge no more[m
+[31m-    than the cost of distribution to the recipient; and[m
+[31m-[m
+[31m-(b) You may distribute such Executable Form under the terms of this[m
+[31m-    License, or sublicense it under different terms, provided that the[m
+[31m-    license for the Executable Form does not attempt to limit or alter[m
+[31m-    the recipients' rights in the Source Code Form under this License.[m
+[31m-[m
+[31m-3.3. Distribution of a Larger Work[m
+[31m-[m
+[31m-You may create and distribute a Larger Work under terms of Your choice,[m
+[31m-provided that You also comply with the requirements of this License for[m
+[31m-the Covered Software. If the Larger Work is a combination of Covered[m
+[31m-Software with a work governed by one or more Secondary Licenses, and the[m
+[31m-Covered Software is not Incompatible With Secondary Licenses, this[m
+[31m-License permits You to additionally distribute such Covered Software[m
+[31m-under the terms of such Secondary License(s), so that the recipient of[m
+[31m-the Larger Work may, at their option, further distribute the Covered[m
+[31m-Software under the terms of either this License or such Secondary[m
+[31m-License(s).[m
+[31m-[m
+[31m-3.4. Notices[m
+[31m-[m
+[31m-You may not remove or alter the substance of any license notices[m
+[31m-(including copyright notices, patent notices, disclaimers of warranty,[m
+[31m-or limitations of liability) contained within the Source Code Form of[m
+[31m-the Covered Software, except that You may alter any license notices to[m
+[31m-the extent required to remedy known factual inaccuracies.[m
+[31m-[m
+[31m-3.5. Application of Additional Terms[m
+[31m-[m
+[31m-You may choose to offer, and to charge a fee for, warranty, support,[m
+[31m-indemnity or liability obligations to one or more recipients of Covered[m
+[31m-Software. However, You may do so only on Your own behalf, and not on[m
+[31m-behalf of any Contributor. You must make it absolutely clear that any[m
+[31m-such warranty, support, indemnity, or liability obligation is offered by[m
+[31m-You alone, and You hereby agree to indemnify every Contributor for any[m
+[31m-liability incurred by such Contributor as a result of warranty, support,[m
+[31m-indemnity or liability terms You offer. You may include additional[m
+[31m-disclaimers of warranty and limitations of liability specific to any[m
+[31m-jurisdiction.[m
+[31m-[m
+[31m-4. Inability to Comply Due to Statute or Regulation[m
+[31m----------------------------------------------------[m
+[31m-[m
+[31m-If it is impossible for You to comply with any of the terms of this[m
+[31m-License with respect to some or all of the Covered Software due to[m
+[31m-statute, judicial order, or regulation then You must: (a) comply with[m
+[31m-the terms of this License to the maximum extent possible; and (b)[m
+[31m-describe the limitations and the code they affect. Such description must[m
+[31m-be placed in a text file included with all distributions of the Covered[m
+[31m-Software under this License. Except to the extent prohibited by statute[m
+[31m-or regulation, such description must be sufficiently detailed for a[m
+[31m-recipient of ordinary skill to be able to understand it.[m
+[31m-[m
+[31m-5. Termination[m
+[31m---------------[m
+[31m-[m
+[31m-5.1. The rights granted under this License will terminate automatically[m
+[31m-if You fail to comply with any of its terms. However, if You become[m
+[31m-compliant, then the rights granted under this License from a particular[m
+[31m-Contributor are reinstated (a) provisionally, unless and until such[m
+[31m-Contributor explicitly and finally terminates Your grants, and (b) on an[m
+[31m-ongoing basis, if such Contributor fails to notify You of the[m
+[31m-non-compliance by some reasonable means prior to 60 days after You have[m
+[31m-come back into compliance. Moreover, Your grants from a particular[m
+[31m-Contributor are reinstated on an ongoing basis if such Contributor[m
+[31m-notifies You of the non-compliance by some reasonable means, this is the[m
+[31m-first time You have received notice of non-compliance with this License[m
+[31m-from such Contributor, and You become compliant prior to 30 days after[m
+[31m-Your receipt of the notice.[m
+[31m-[m
+[31m-5.2. If You initiate litigation against any entity by asserting a patent[m
+[31m-infringement claim (excluding declaratory judgment actions,[m
+[31m-counter-claims, and cross-claims) alleging that a Contributor Version[m
+[31m-directly or indirectly infringes any patent, then the rights granted to[m
+[31m-You by any and all Contributors for the Covered Software under Section[m
+[31m-2.1 of this License shall terminate.[m
+[31m-[m
+[31m-5.3. In the event of termination under Sections 5.1 or 5.2 above, all[m
+[31m-end user license agreements (excluding distributors and resellers) which[m
+[31m-have been validly granted by You or Your distributors under this License[m
+[31m-prior to termination shall survive termination.[m
+[31m-[m
+[31m-************************************************************************[m
+[31m-*                                                                      *[m
+[31m-*  6. Disclaimer of Warranty                                           *[m
+[31m-*  -------------------------                                           *[m
+[31m-*                                                                      *[m
+[31m-*  Covered Software is provided under this License on an "as is"       *[m
+[31m-*  basis, without warranty of any kind, either expressed, implied, or  *[m
+[31m-*  statutory, including, without limitation, warranties that the       *[m
+[31m-*  Covered Software is free of defects, merchantable, fit for a        *[m
+[31m-*  particular purpose or non-infringing. The entire risk as to the     *[m
+[31m-*  quality and performance of the Covered Software is with You.        *[m
+[31m-*  Should any Covered Software prove defective in any respect, You     *[m
+[31m-*  (not any Contributor) assume the cost of any necessary servicing,   *[m
+[31m-*  repair, or correction. This disclaimer of warranty constitutes an   *[m
+[31m-*  essential part of this License. No use of any Covered Software is   *[m
+[31m-*  authorized under this License except under this disclaimer.         *[m
+[31m-*                                                                      *[m
+[31m-************************************************************************[m
+[31m-[m
+[31m-************************************************************************[m
+[31m-*                                                                      *[m
+[31m-*  7. Limitation of Liability                                          *[m
+[31m-*  --------------------------                                          *[m
+[31m-*                                                                      *[m
+[31m-*  Under no circumstances and under no legal theory, whether tort      *[m
+[31m-*  (including negligence), contract, or otherwise, shall any           *[m
+[31m-*  Contributor, or anyone who distributes Covered Software as          *[m
+[31m-*  permitted above, be liable to You for any direct, indirect,         *[m
+[31m-*  special, incidental, or consequential damages of any character      *[m
+[31m-*  including, without limitation, damages for lost profits, loss of    *[m
+[31m-*  goodwill, work stoppage, computer failure or malfunction, or any    *[m
+[31m-*  and all other commercial damages or losses, even if such party      *[m
+[31m-*  shall have been informed of the possibility of such damages. This   *[m
+[31m-*  limitation of liability shall not apply to liability for death or   *[m
+[31m-*  personal injury resulting from such party's negligence to the       *[m
+[31m-*  extent applicable law prohibits such limitation. Some               *[m
+[31m-*  jurisdictions do not allow the exclusion or limitation of           *[m
+[31m-*  incidental or consequential damages, so this exclusion and          *[m
+[31m-*  limitation may not apply to You.                                    *[m
+[31m-*                                                                      *[m
+[31m-************************************************************************[m
+[31m-[m
+[31m-8. Litigation[m
+[31m--------------[m
+[31m-[m
+[31m-Any litigation relating to this License may be brought only in the[m
+[31m-courts of a jurisdiction where the defendant maintains its principal[m
+[31m-place of business and such litigation shall be governed by laws of that[m
+[31m-jurisdiction, without reference to its conflict-of-law provisions.[m
+[31m-Nothing in this Section shall prevent a party's ability to bring[m
+[31m-cross-claims or counter-claims.[m
+[31m-[m
+[31m-9. Miscellaneous[m
+[31m-----------------[m
+[31m-[m
+[31m-This License represents the complete agreement concerning the subject[m
+[31m-matter hereof. If any provision of this License is held to be[m
+[31m-unenforceable, such provision shall be reformed only to the extent[m
+[31m-necessary to make it enforceable. Any law or regulation which provides[m
+[31m-that the language of a contract shall be construed against the drafter[m
+[31m-shall not be used to construe this License against a Contributor.[m
+[31m-[m
+[31m-10. Versions of the License[m
+[31m----------------------------[m
+[31m-[m
+[31m-10.1. New Versions[m
+[31m-[m
+[31m-Mozilla Foundation is the license steward. Except as provided in Section[m
+[31m-10.3, no one other than the license steward has the right to modify or[m
+[31m-publish new versions of this License. Each version will be given a[m
+[31m-distinguishing version number.[m
+[31m-[m
+[31m-10.2. Effect of New Versions[m
+[31m-[m
+[31m-You may distribute the Covered Software under the terms of the version[m
+[31m-of the License under which You originally received the Covered Software,[m
+[31m-or under the terms of any subsequent version published by the license[m
+[31m-steward.[m
+[31m-[m
+[31m-10.3. Modified Versions[m
+[31m-[m
+[31m-If you create software not governed by this License, and you want to[m
+[31m-create a new license for such software, you may create and use a[m
+[31m-modified version of this License if you rename the license and remove[m
+[31m-any references to the name of the license steward (except to note that[m
+[31m-such modified license differs from this License).[m
+[31m-[m
+[31m-10.4. Distributing Source Code Form that is Incompatible With Secondary[m
+[31m-Licenses[m
+[31m-[m
+[31m-If You choose to distribute Source Code Form that is Incompatible With[m
+[31m-Secondary Licenses under the terms of this version of the License, the[m
+[31m-notice described in Exhibit B of this License must be attached.[m
+[31m-[m
+[31m-Exhibit A - Source Code Form License Notice[m
+[31m--------------------------------------------[m
+[31m-[m
+[31m-  This Source Code Form is subject to the terms of the Mozilla Public[m
+[31m-  License, v. 2.0. If a copy of the MPL was not distributed with this[m
+[31m-  file, You can obtain one at http://mozilla.org/MPL/2.0/.[m
+[31m-[m
+[31m-If it is not possible or desirable to put the notice in a particular[m
+[31m-file, then You may include the notice in a location (such as a LICENSE[m
+[31m-file in a relevant directory) where a recipient would be likely to look[m
+[31m-for such a notice.[m
+[31m-[m
+[31m-You may add additional accurate notices of copyright ownership.[m
+[31m-[m
+[31m-Exhibit B - "Incompatible With Secondary Licenses" Notice[m
+[31m----------------------------------------------------------[m
+[31m-[m
+[31m-  This Source Code Form is "Incompatible With Secondary Licenses", as[m
+[31m-  defined by the Mozilla Public License, v. 2.0.[m
+[1mdiff --git a/terraform/.terraform/providers/registry.terraform.io/hashicorp/aws/6.18.0/linux_amd64/terraform-provider-aws_v6.18.0_x5 b/terraform/.terraform/providers/registry.terraform.io/hashicorp/aws/6.18.0/linux_amd64/terraform-provider-aws_v6.18.0_x5[m
+[1mdeleted file mode 100755[m
+[1mindex 7b7cc1e..0000000[m
+Binary files a/terraform/.terraform/providers/registry.terraform.io/hashicorp/aws/6.18.0/linux_amd64/terraform-provider-aws_v6.18.0_x5 and /dev/null differ
+[1mdiff --git a/terraform/Modules/acm/main.tf b/terraform/Modules/acm/main.tf[m
+[1mdeleted file mode 100644[m
+[1mindex e406a2b..0000000[m
+[1m--- a/terraform/Modules/acm/main.tf[m
+[1m+++ /dev/null[m
+[36m@@ -1,8 +0,0 @@[m
+[31m-resource "aws_acm_certificate" "cert" {[m
+[31m-  domain_name       = var.domainName[m
+[31m-  validation_method = "DNS"[m
+[31m-  subject_alternative_names = ["www.${var.domainName}"]  [m
+[31m-  lifecycle {[m
+[31m-    create_before_destroy = true[m
+[31m-  }[m
+[31m-}[m
+\ No newline at end of file[m
+[1mdiff --git a/terraform/Modules/acm/outputs.tf b/terraform/Modules/acm/outputs.tf[m
+[1mdeleted file mode 100644[m
+[1mindex 4ae6c7f..0000000[m
+[1m--- a/terraform/Modules/acm/outputs.tf[m
+[1m+++ /dev/null[m
+[36m@@ -1,9 +0,0 @@[m
+[31m-output "cert_arn" {[m
+[31m-   value = aws_acm_certificate.cert.arn[m
+[31m-}[m
+[31m-[m
+[31m-output "domain_validation_options" {[m
+[31m-   value = aws_acm_certificate.cert.domain_validation_options[m
+[31m-}[m
+[31m-[m
+[31m-[m
+[1mdiff --git a/terraform/Modules/acm/variables.tf b/terraform/Modules/acm/variables.tf[m
+[1mdeleted file mode 100644[m
+[1mindex 5ab1c51..0000000[m
+[1m--- a/terraform/Modules/acm/variables.tf[m
+[1m+++ /dev/null[m
+[36m@@ -1,4 +0,0 @@[m
+[31m-variable "domainName" {[m
+[31m-    description = "domain name of static website"[m
+[31m-    type = string[m
+[31m-}[m
+\ No newline at end of file[m
+[1mdiff --git a/terraform/Modules/cloudfront/main.tf b/terraform/Modules/cloudfront/main.tf[m
+[1mdeleted file mode 100644[m
+[1mindex 6ffce32..0000000[m
+[1m--- a/terraform/Modules/cloudfront/main.tf[m
+[1m+++ /dev/null[m
+[36m@@ -1,55 +0,0 @@[m
+[31m-[m
+[31m-resource "aws_cloudfront_origin_access_control" "s3_origin" {[m
+[31m-  name                              = var.oac_name[m
+[31m-  description                       = "An origin access control with s3 origin domain"[m
+[31m-  origin_access_control_origin_type = "s3"[m
+[31m-  signing_behavior                  = "always"[m
+[31m-  signing_protocol                  = "sigv4"[m
+[31m-}[m
+[31m-[m
+[31m-resource "aws_cloudfront_distribution" "s3_distribution_cdn" {[m
+[31m-  origin {[m
+[31m-    domain_name = var.cdn_domain_name[m
+[31m-    origin_id   = var.cdn_domain_name[m
+[31m-    origin_access_control_id = aws_cloudfront_origin_access_control.s3_origin.id[m
+[31m-  }[m
+[31m-  enabled             = true[m
+[31m-  is_ipv6_enabled     = true[m
+[31m-  default_root_object = "index.html"[m
+[31m-  aliases = [var.domainName, "www.${var.domainName}"][m
+[31m-  # AWS Managed Caching Policy (CachingDisabled)[m
+[31m-  default_cache_behavior {[m
+[31m-    allowed_methods        = ["GET", "HEAD"][m
+[31m-    cached_methods         = ["GET", "HEAD"][m
+[31m-    target_origin_id       = var.cdn_domain_name[m
+[31m-    viewer_protocol_policy = "redirect-to-https"[m
+[31m-    min_ttl = 0[m
+[31m-    default_ttl = 3600[m
+[31m-    max_ttl = 86400[m
+[31m-[m
+[31m-    forwarded_values {[m
+[31m-      query_string = false[m
+[31m-[m
+[31m-      cookies {[m
+[31m-        forward = "all"[m
+[31m-      }[m
+[31m-    }[m
+[31m-[m
+[31m-  }[m
+[31m-[m
+[31m-  restrictions {[m
+[31m-    geo_restriction {[m
+[31m-      restriction_type = "none"[m
+[31m-    }[m
+[31m-  }[m
+[31m-[m
+[31m-  [m
+[31m-  viewer_certificate {[m
+[31m-    acm_certificate_arn = var.acm_certificate_arn[m
+[31m-    ssl_support_method  = "sni-only"[m
+[31m-    minimum_protocol_version = "TLSv1.2_2021"[m
+[31m-  }[m
+[31m-[m
+[31m-  [m
+[31m-}[m
+[31m-[m
+[1mdiff --git a/terraform/Modules/cloudfront/output.tf b/terraform/Modules/cloudfront/output.tf[m
+[1mdeleted file mode 100644[m
+[1mindex b26df7c..0000000[m
+[1m--- a/terraform/Modules/cloudfront/output.tf[m
+[1m+++ /dev/null[m
+[36m@@ -1,11 +0,0 @@[m
+[31m-output "cloudfront_arn" {[m
+[31m-  value = aws_cloudfront_distribution.s3_distribution_cdn.arn[m
+[31m-}[m
+[31m-[m
+[31m-output "cloudfront_domain_name" {[m
+[31m-  value = aws_cloudfront_distribution.s3_distribution_cdn.domain_name[m
+[31m-}[m
+[31m-[m
+[31m-output "cloudfront_hosted_zone_id" {[m
+[31m-  value = aws_cloudfront_distribution.s3_distribution_cdn.hosted_zone_id[m
+[31m-}[m
+\ No newline at end of file[m
+[1mdiff --git a/terraform/Modules/cloudfront/variables.tf b/terraform/Modules/cloudfront/variables.tf[m
+[1mdeleted file mode 100644[m
+[1mindex e49852e..0000000[m
+[1m--- a/terraform/Modules/cloudfront/variables.tf[m
+[1m+++ /dev/null[m
+[36m@@ -1,20 +0,0 @@[m
+[31m-variable "oac_name" {[m
+[31m-   description = "name of the cloudfront origin access control"[m
+[31m-   type = string[m
+[31m-}[m
+[31m-[m
+[31m-variable "domainName" {[m
+[31m-    description = "domain name of static website"[m
+[31m-    type = string[m
+[31m-}[m
+[31m-[m
+[31m-variable "cdn_domain_name" {[m
+[31m-   description = "value"[m
+[31m-   type = string[m
+[31m-}[m
+[31m-[m
+[31m-[m
+[31m-variable "acm_certificate_arn" {[m
+[31m-  description = "The ARN of the ACM certificate"[m
+[31m-  type        = string[m
+[31m-}[m
+[1mdiff --git a/terraform/Modules/route53/main.tf b/terraform/Modules/route53/main.tf[m
+[1mdeleted file mode 100644[m
+[1mindex 2545032..0000000[m
+[1m--- a/terraform/Modules/route53/main.tf[m
+[1m+++ /dev/null[m
+[36m@@ -1,40 +0,0 @@[m
+[31m-data "aws_route53_zone" "hosted" {[m
+[31m-  name = var.domainName[m
+[31m-}[m
+[31m-[m
+[31m-[m
+[31m-#acm-certificate validation record[m
+[31m-resource "aws_route53_record" "cert_validation" {[m
+[31m- for_each = {[m
+[31m-    for dvo in var.domain_validation_options : dvo.domain_name => {[m
+[31m-      name   = dvo.resource_record_name[m
+[31m-      record = dvo.resource_record_value[m
+[31m-      type   = dvo.resource_record_type[m
+[31m-    }[m
+[31m-  }[m
+[31m-    [m
+[31m-  allow_overwrite = true[m
+[31m-  name            = each.value.name[m
+[31m-  records         = [each.value.record][m
+[31m-  ttl             = 60[m
+[31m-  type            = each.value.type[m
+[31m-  zone_id         = data.aws_route53_zone.hosted.zone_id[m
+[31m-}[m
+[31m-[m
+[31m-resource "aws_acm_certificate_validation" "validate-cert" {[m
+[31m-  certificate_arn         = var.certificateArn[m
+[31m-  validation_record_fqdns = [for record in aws_route53_record.cert_validation : record.fqdn][m
+[31m-  depends_on = [ aws_route53_record.cert_validation ][m
+[31m-}[m
+[31m-[m
+[31m-resource "aws_route53_record" "cdn_domain_name" {[m
+[31m-  zone_id = data.aws_route53_zone.hosted.zone_id[m
+[31m-  name    = var.domainName[m
+[31m-  type    = "A"[m
+[31m-[m
+[31m-  alias {[m
+[31m-    name                   = var.cloudfront_domain_name[m
+[31m-    zone_id                = var.cloudfront_zone_id[m
+[31m-    evaluate_target_health = false[m
+[31m-  }[m
+[31m-}[m
+[1mdiff --git a/terraform/Modules/route53/outputs.tf b/terraform/Modules/route53/outputs.tf[m
+[1mdeleted file mode 100644[m
+[1mindex 484b442..0000000[m
+[1m--- a/terraform/Modules/route53/outputs.tf[m
+[1m+++ /dev/null[m
+[36m@@ -1,7 +0,0 @@[m
+[31m-output "dns_records" {[m
+[31m-  value = aws_route53_record.cert_validation[m
+[31m-}[m
+[31m-[m
+[31m-output "zone_id" {[m
+[31m-  value = data.aws_route53_zone.hosted.zone_id[m
+[31m-}[m
+\ No newline at end of file[m
+[1mdiff --git a/terraform/Modules/route53/variables.tf b/terraform/Modules/route53/variables.tf[m
+[1mdeleted file mode 100644[m
+[1mindex eeec615..0000000[m
+[1m--- a/terraform/Modules/route53/variables.tf[m
+[1m+++ /dev/null[m
+[36m@@ -1,24 +0,0 @@[m
+[31m-variable "domainName" {[m
+[31m-    description = "domain name of static website"[m
+[31m-    type = string[m
+[31m-}[m
+[31m-[m
+[31m-variable "certificateArn" {[m
+[31m-  description = "value"[m
+[31m-  type = string[m
+[31m-}[m
+[31m-[m
+[31m-variable "domain_validation_options" {[m
+[31m-  description = "List of validation options for ACM"[m
+[31m-  type        = any[m
+[31m-}[m
+[31m-[m
+[31m-variable "cloudfront_domain_name" {[m
+[31m-  description = "CloudFront distribution domain name"[m
+[31m-  type        = string[m
+[31m-}[m
+[31m-[m
+[31m-variable "cloudfront_zone_id" {[m
+[31m-  description = "CloudFront distribution hosted zone ID"[m
+[31m-  type        = string[m
+[31m-}[m
+\ No newline at end of file[m
+[1mdiff --git a/terraform/Modules/s3-bucket/main.tf b/terraform/Modules/s3-bucket/main.tf[m
+[1mdeleted file mode 100644[m
+[1mindex 647a261..0000000[m
+[1m--- a/terraform/Modules/s3-bucket/main.tf[m
+[1m+++ /dev/null[m
+[36m@@ -1,34 +0,0 @@[m
+[31m-resource "aws_s3_bucket" "static_web_bucket" {[m
+[31m-  bucket = var.bucketName[m
+[31m-[m
+[31m-  tags = {[m
+[31m-    Name        = "My bucket"[m
+[31m-    Environment = "Dev"[m
+[31m-  }[m
+[31m-}[m
+[31m-[m
+[31m-resource "aws_s3_object" "object" {[m
+[31m-  for_each = fileset("${var.web_path}", "**")[m
+[31m-  bucket = aws_s3_bucket.static_web_bucket.id[m
+[31m-  key    = each.value[m
+[31m-  source = "${var.web_path}/${each.value}"[m
+[31m-  content_type = lookup(var.mime_types, regex(".*\\.(.*)$", each.value)[0], "application/octet-stream")[m
+[31m-}[m
+[31m-[m
+[31m-resource "aws_s3_bucket_policy" "cloudfront-oac-policy" {[m
+[31m-  bucket = aws_s3_bucket.static_web_bucket.bucket[m
+[31m-  policy = jsonencode({[m
+[31m-    Version = "2012-10-17",[m
+[31m-    Statement = [[m
+[31m-      {[m
+[31m-        Sid = "AllowCloudFrontServicePrincipal",[m
+[31m-        Effect = "Allow",[m
+[31m-        Principal = {[m
+[31m-          Service = "cloudfront.amazonaws.com"[m
+[31m-        },[m
+[31m-        Action = "s3:GetObject",[m
+[31m-        Resource = "${aws_s3_bucket.static_web_bucket.arn}/*",[m
+[31m-      }[m
+[31m-    ][m
+[31m-  })[m
+[31m-}[m
+\ No newline at end of file[m
+[1mdiff --git a/terraform/Modules/s3-bucket/outputs.tf b/terraform/Modules/s3-bucket/outputs.tf[m
+[1mdeleted file mode 100644[m
+[1mindex 45d4072..0000000[m
+[1m--- a/terraform/Modules/s3-bucket/outputs.tf[m
+[1m+++ /dev/null[m
+[36m@@ -1,4 +0,0 @@[m
+[31m-output "bucket_regional_domain_name"{[m
+[31m-    description = "bucket domain name"[m
+[31m-    value = aws_s3_bucket.static_web_bucket.bucket_regional_domain_name[m
+[31m-}[m
+\ No newline at end of file[m
+[1mdiff --git a/terraform/Modules/s3-bucket/variables.tf b/terraform/Modules/s3-bucket/variables.tf[m
+[1mdeleted file mode 100644[m
+[1mindex b06c4f4..0000000[m
+[1m--- a/terraform/Modules/s3-bucket/variables.tf[m
+[1m+++ /dev/null[m
+[36m@@ -1,21 +0,0 @@[m
+[31m-variable "bucketName" {[m
+[31m-    description = "The name of bucket"[m
+[31m-    type = string[m
+[31m-}[m
+[31m-[m
+[31m-variable "web_path" {[m
+[31m-    description = "path to local website files"[m
+[31m-    type = string[m
+[31m-}[m
+[31m-[m
+[31m-variable "mime_types" {[m
+[31m-   description = "file extension of mime types"[m
+[31m-   type = map(string)[m
+[31m-   default = {[m
+[31m-     "html" = "text/html"[m
+[31m-     "css" = "text/css"[m
+[31m-     "jpg" = "image/jpeg"[m
+[31m-     "js" = "application/javascript"[m
+[31m-   }[m
+[31m-}[m
+[31m-  [m
+[1mdiff --git a/terraform/main.tf b/terraform/main.tf[m
+[1mdeleted file mode 100644[m
+[1mindex b90b369..0000000[m
+[1m--- a/terraform/main.tf[m
+[1m+++ /dev/null[m
+[36m@@ -1,30 +0,0 @@[m
+[31m-module "s3_bucket" {[m
+[31m-  source = "./Modules/s3-bucket"[m
+[31m-  bucketName = var.bucket_name[m
+[31m-  web_path = var.web_path[m
+[31m-  [m
+[31m-}[m
+[31m-[m
+[31m-module "acm" {[m
+[31m-  source = "./Modules/acm"[m
+[31m-  domainName = var.domainName[m
+[31m-}[m
+[31m-[m
+[31m-module "route53" {[m
+[31m-  source = "./Modules/route53"[m
+[31m-   certificateArn = module.acm.cert_arn[m
+[31m-   domain_validation_options = module.acm.domain_validation_options[m
+[31m-   domainName = var.domainName[m
+[31m-  cloudfront_domain_name = module.cloudfront.cloudfront_domain_name[m
+[31m-  cloudfront_zone_id = module.cloudfront.cloudfront_hosted_zone_id[m
+[31m-[m
+[31m-}[m
+[31m-[m
+[31m-module "cloudfront" {[m
+[31m-  source = "./Modules/cloudfront"[m
+[31m-  domainName = var.domainName[m
+[31m-  cdn_domain_name = module.s3_bucket.bucket_regional_domain_name[m
+[31m-  acm_certificate_arn = module.acm.cert_arn[m
+[31m-  oac_name = var.oac_name[m
+[31m- [m
+[31m-}[m
+[1mdiff --git a/terraform/outputs.tf b/terraform/outputs.tf[m
+[1mdeleted file mode 100644[m
+[1mindex 18d9def..0000000[m
+[1m--- a/terraform/outputs.tf[m
+[1m+++ /dev/null[m
+[36m@@ -1,7 +0,0 @@[m
+[31m-output "bucket-name" {[m
+[31m-  value = module.s3_bucket.bucket_regional_domain_name[m
+[31m-}[m
+[31m-[m
+[31m-output "domain_validation_options" {[m
+[31m-  value = module.acm.domain_validation_options[m
+[31m-}[m
+[1mdiff --git a/terraform/provider.tf b/terraform/provider.tf[m
+[1mdeleted file mode 100644[m
+[1mindex d349761..0000000[m
+[1m--- a/terraform/provider.tf[m
+[1m+++ /dev/null[m
+[36m@@ -1,15 +0,0 @@[m
+[31m-terraform {[m
+[31m-  required_providers {[m
+[31m-    aws = {[m
+[31m-      source = "hashicorp/aws"[m
+[31m-      version = ">= 5.0.0"    [m
+[31m-      }[m
+[31m-  }[m
+[31m-}[m
+[31m-[m
+[31m-provider "aws" {[m
+[31m-   region = "us-east-1"[m
+[31m-  profile = "default"  # or whatever profile name you used in aws configure[m
+[31m-}[m
+[31m-[m
+[31m-[m
+[1mdiff --git a/terraform/terraform.tfstate b/terraform/terraform.tfstate[m
+[1mdeleted file mode 100644[m
+[1mindex 38aec73..0000000[m
+[1m--- a/terraform/terraform.tfstate[m
+[1m+++ /dev/null[m
+[36m@@ -1,9 +0,0 @@[m
+[31m-{[m
+[31m-  "version": 4,[m
+[31m-  "terraform_version": "1.13.4",[m
+[31m-  "serial": 89,[m
+[31m-  "lineage": "ca69dbdc-2b12-bad7-897f-88698908a7c6",[m
+[31m-  "outputs": {},[m
+[31m-  "resources": [],[m
+[31m-  "check_results": null[m
+[31m-}[m
+[1mdiff --git a/terraform/terraform.tfstate.backup b/terraform/terraform.tfstate.backup[m
+[1mdeleted file mode 100644[m
+[1mindex 373bb12..0000000[m
+[1m--- a/terraform/terraform.tfstate.backup[m
+[1m+++ /dev/null[m
+[36m@@ -1,1163 +0,0 @@[m
+[31m-{[m
+[31m-  "version": 4,[m
+[31m-  "terraform_version": "1.13.4",[m
+[31m-  "serial": 68,[m
+[31m-  "lineage": "ca69dbdc-2b12-bad7-897f-88698908a7c6",[m
+[31m-  "outputs": {[m
+[31m-    "bucket-name": {[m
+[31m-      "value": "thedevlearn.site.s3.us-east-1.amazonaws.com",[m
+[31m-      "type": "string"[m
+[31m-    },[m
+[31m-    "domain_validation_options": {[m
+[31m-      "value": [[m
+[31m-        {[m
+[31m-          "domain_name": "thedevlearn.site",[m
+[31m-          "resource_record_name": "_436124d3acab893d9a9d2dcee8223c4e.thedevlearn.site.",[m
+[31m-          "resource_record_type": "CNAME",[m
+[31m-          "resource_record_value": "_7087d6bf16af5608970d0f2db43a1426.zfyfvmchrl.acm-validations.aws."[m
+[31m-        },[m
+[31m-        {[m
+[31m-          "domain_name": "www.thedevlearn.site",[m
+[31m-          "resource_record_name": "_c818e4925cba37fe27c2f5b02d632702.www.thedevlearn.site.",[m
+[31m-          "resource_record_type": "CNAME",[m
+[31m-          "resource_record_value": "_2caee9bf7f053e12ffb6d6e7a6b3e02d.xlfgrmvvlj.acm-validations.aws."[m
+[31m-        }[m
+[31m-      ],[m
+[31m-      "type": [[m
+[31m-        "set",[m
+[31m-        [[m
+[31m-          "object",[m
+[31m-          {[m
+[31m-            "domain_name": "string",[m
+[31m-            "resource_record_name": "string",[m
+[31m-            "resource_record_type": "string",[m
+[31m-            "resource_record_value": "string"[m
+[31m-          }[m
+[31m-        ][m
+[31m-      ][m
+[31m-    }[m
+[31m-  },[m
+[31m-  "resources": [[m
+[31m-    {[m
+[31m-      "module": "module.acm",[m
+[31m-      "mode": "managed",[m
+[31m-      "type": "aws_acm_certificate",[m
+[31m-      "name": "cert",[m
+[31m-      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",[m
+[31m-      "instances": [[m
+[31m-        {[m
+[31m-          "schema_version": 0,[m
+[31m-          "attributes": {[m
+[31m-            "arn": "arn:aws:acm:us-east-1:430118849545:certificate/316c9af0-7156-425a-8c3b-6909da1c0410",[m
+[31m-            "certificate_authority_arn": "",[m
+[31m-            "certificate_body": null,[m
+[31m-            "certificate_chain": null,[m
+[31m-            "domain_name": "thedevlearn.site",[m
+[31m-            "domain_validation_options": [[m
+[31m-              {[m
+[31m-                "domain_name": "thedevlearn.site",[m
+[31m-                "resource_record_name": "_436124d3acab893d9a9d2dcee8223c4e.thedevlearn.site.",[m
+[31m-                "resource_record_type": "CNAME",[m
+[31m-                "resource_record_value": "_7087d6bf16af5608970d0f2db43a1426.zfyfvmchrl.acm-validations.aws."[m
+[31m-              },[m
+[31m-              {[m
+[31m-                "domain_name": "www.thedevlearn.site",[m
+[31m-                "resource_record_name": "_c818e4925cba37fe27c2f5b02d632702.www.thedevlearn.site.",[m
+[31m-                "resource_record_type": "CNAME",[m
+[31m-                "resource_record_value": "_2caee9bf7f053e12ffb6d6e7a6b3e02d.xlfgrmvvlj.acm-validations.aws."[m
+[31m-              }[m
+[31m-            ],[m
+[31m-            "early_renewal_duration": "",[m
+[31m-            "id": "arn:aws:acm:us-east-1:430118849545:certificate/316c9af0-7156-425a-8c3b-6909da1c0410",[m
+[31m-            "key_algorithm": "RSA_2048",[m
+[31m-            "not_after": "",[m
+[31m-            "not_before": "",[m
+[31m-            "options": [[m
+[31m-              {[m
+[31m-                "certificate_transparency_logging_preference": "ENABLED",[m
+[31m-                "export": "DISABLED"[m
+[31m-              }[m
+[31m-            ],[m
+[31m-            "pending_renewal": false,[m
+[31m-            "private_key": null,[m
+[31m-            "region": "us-east-1",[m
+[31m-            "renewal_eligibility": "INELIGIBLE",[m
+[31m-            "renewal_summary": [],[m
+[31m-            "status": "PENDING_VALIDATION",[m
+[31m-            "subject_alternative_names": [[m
+[31m-              "thedevlearn.site",[m
+[31m-              "www.thedevlearn.site"[m
+[31m-            ],[m
+[31m-            "tags": null,[m
+[31m-            "tags_all": {},[m
+[31m-            "type": "AMAZON_ISSUED",[m
+[31m-            "validation_emails": [],[m
+[31m-            "validation_method": "DNS",[m
+[31m-            "validation_option": [][m
+[31m-          },[m
+[31m-          "sensitive_attributes": [[m
+[31m-            [[m
+[31m-              {[m
+[31m-                "type": "get_attr",[m
+[31m-                "value": "private_key"[m
+[31m-              }[m
+[31m-            ][m
+[31m-          ],[m
+[31m-          "identity_schema_version": 0,[m
+[31m-          "identity": {[m
+[31m-            "arn": "arn:aws:acm:us-east-1:430118849545:certificate/316c9af0-7156-425a-8c3b-6909da1c0410"[m
+[31m-          },[m
+[31m-          "private": "bnVsbA==",[m
+[31m-          "create_before_destroy": true[m
+[31m-        }[m
+[31m-      ][m
+[31m-    },[m
+[31m-    {[m
+[31m-      "module": "module.cloudfront",[m
+[31m-      "mode": "managed",[m
+[31m-      "type": "aws_cloudfront_distribution",[m
+[31m-      "name": "s3_distribution_cdn",[m
+[31m-      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",[m
+[31m-      "instances": [[m
+[31m-        {[m
+[31m-          "schema_version": 1,[m
+[31m-          "attributes": {[m
+[31m-            "aliases": [[m
+[31m-              "thedevlearn.site",[m
+[31m-              "www.thedevlearn.site"[m
+[31m-            ],[m
+[31m-            "anycast_ip_list_id": "",[m
+[31m-            "arn": "arn:aws:cloudfront::430118849545:distribution/E3KNYL6R8BBDE4",[m
+[31m-            "caller_reference": "terraform-20251026083655889400000002",[m
+[31m-            "comment": null,[m
+[31m-            "continuous_deployment_policy_id": "",[m
+[31m-            "custom_error_response": [],[m
+[31m-            "default_cache_behavior": [[m
+[31m-              {[m
+[31m-                "allowed_methods": [[m
+[31m-                  "GET",[m
+[31m-                  "HEAD"[m
+[31m-                ],[m
+[31m-                "cache_policy_id": "",[m
+[31m-                "cached_methods": [[m
+[31m-                  "GET",[m
+[31m-                  "HEAD"[m
+[31m-                ],[m
+[31m-                "compress": false,[m
+[31m-                "default_ttl": 3600,[m
+[31m-                "field_level_encryption_id": "",[m
+[31m-                "forwarded_values": [[m
+[31m-                  {[m
+[31m-                    "cookies": [[m
+[31m-                      {[m
+[31m-                        "forward": "all",[m
+[31m-                        "whitelisted_names": [][m
+[31m-                      }[m
+[31m-                    ],[m
+[31m-                    "headers": [],[m
+[31m-                    "query_string": false,[m
+[31m-                    "query_string_cache_keys": [][m
+[31m-                  }[m
+[31m-                ],[m
+[31m-                "function_association": [],[m
+[31m-                "grpc_config": [[m
+[31m-                  {[m
+[31m-                    "enabled": false[m
+[31m-                  }[m
+[31m-                ],[m
+[31m-                "lambda_function_association": [],[m
+[31m-                "max_ttl": 86400,[m
+[31m-                "min_ttl": 0,[m
+[31m-                "origin_request_policy_id": "",[m
+[31m-                "realtime_log_config_arn": "",[m
+[31m-                "response_headers_policy_id": "",[m
+[31m-                "smooth_streaming": false,[m
+[31m-                "target_origin_id": "thedevlearn.site.s3.us-east-1.amazonaws.com",[m
+[31m-                "trusted_key_groups": [],[m
+[31m-                "trusted_signers": [],[m
+[31m-                "viewer_protocol_policy": "redirect-to-https"[m
+[31m-              }[m
+[31m-            ],[m
+[31m-            "default_root_object": "index.html",[m
+[31m-            "domain_name": "d1vbiob8grzucz.cloudfront.net",[m
+[31m-            "enabled": true,[m
+[31m-            "etag": "E1HN3TGNSNEZBK",[m
+[31m-            "hosted_zone_id": "Z2FDTNDATAQYW2",[m
+[31m-            "http_version": "http2",[m
+[31m-            "id": "E3KNYL6R8BBDE4",[m
+[31m-            "in_progress_validation_batches": 0,[m
+[31m-            "is_ipv6_enabled": true,[m
+[31m-            "last_modified_time": "2025-10-26 08:37:09.117 +0000 UTC",[m
+[31m-            "logging_config": [],[m
+[31m-            "ordered_cache_behavior": [],[m
+[31m-            "origin": [[m
+[31m-              {[m
+[31m-                "connection_attempts": 3,[m
+[31m-                "connection_timeout": 10,[m
+[31m-                "custom_header": [],[m
+[31m-                "custom_origin_config": [],[m
+[31m-                "domain_name": "thedevlearn.site.s3.us-east-1.amazonaws.com",[m
+[31m-                "origin_access_control_id": "E1H69VDJ4KCMV9",[m
+[31m-                "origin_id": "thedevlearn.site.s3.us-east-1.amazonaws.com",[m
+[31m-                "origin_path": "",[m
+[31m-                "origin_shield": [],[m
+[31m-                "response_completion_timeout": 0,[m
+[31m-                "s3_origin_config": [],[m
+[31m-                "vpc_origin_config": [][m
+[31m-              }[m
+[31m-            ],[m
+[31m-            "origin_group": [],[m
+[31m-            "price_class": "PriceClass_All",[m
+[31m-            "restrictions": [[m
+[31m-              {[m
+[31m-                "geo_restriction": [[m
+[31m-                  {[m
+[31m-                    "locations": [],[m
+[31m-                    "restriction_type": "none"[m
+[31m-                  }[m
+[31m-                ][m
+[31m-              }[m
+[31m-            ],[m
+[31m-            "retain_on_delete": false,[m
+[31m-            "staging": false,[m
+[31m-            "status": "Deployed",[m
+[31m-            "tags": null,[m
+[31m-            "tags_all": {},[m
+[31m-            "trusted_key_groups": [[m
+[31m-              {[m
+[31m-                "enabled": false,[m
+[31m-                "items": [][m
+[31m-              }[m
+[31m-            ],[m
+[31m-            "trusted_signers": [[m
+[31m-              {[m
+[31m-                "enabled": false,[m
+[31m-                "items": [][m
+[31m-              }[m
+[31m-            ],[m
+[31m-            "viewer_certificate": [[m
+[31m-              {[m
+[31m-                "acm_certificate_arn": "arn:aws:acm:us-east-1:430118849545:certificate/316c9af0-7156-425a-8c3b-6909da1c0410",[m
+[31m-                "cloudfront_default_certificate": false,[m
+[31m-                "iam_certificate_id": "",[m
+[31m-                "minimum_protocol_version": "TLSv1.2_2021",[m
+[31m-                "ssl_support_method": "sni-only"[m
+[31m-              }[m
+[31m-            ],[m
+[31m-            "wait_for_deployment": true,[m
+[31m-            "web_acl_id": ""[m
+[31m-          },[m
+[31m-          "sensitive_attributes": [],[m
+[31m-          "identity_schema_version": 0,[m
+[31m-          "private": "eyJzY2hlbWFfdmVyc2lvbiI6IjEifQ==",[m
+[31m-          "dependencies": [[m
+[31m-            "module.acm.aws_acm_certificate.cert",[m
+[31m-            "module.cloudfront.aws_cloudfront_origin_access_control.s3_origin",[m
+[31m-            "module.s3_bucket.aws_s3_bucket.static_web_bucket"[m
+[31m-          ][m
+[31m-        }[m
+[31m-      ][m
+[31m-    },[m
+[31m-    {[m
+[31m-      "module": "module.cloudfront",[m
+[31m-      "mode": "managed",[m
+[31m-      "type": "aws_cloudfront_origin_access_control",[m
+[31m-      "name": "s3_origin",[m
+[31m-      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",[m
+[31m-      "instances": [[m
+[31m-        {[m
+[31m-          "schema_version": 0,[m
+[31m-          "attributes": {[m
+[31m-            "arn": "arn:aws:cloudfront::430118849545:origin-access-control/E1H69VDJ4KCMV9",[m
+[31m-            "description": "An origin access control with s3 origin domain",[m
+[31m-            "etag": "ETVPDKIKX0DER",[m
+[31m-            "id": "E1H69VDJ4KCMV9",[m
+[31m-            "name": "st",[m
+[31m-            "origin_access_control_origin_type": "s3",[m
+[31m-            "signing_behavior": "always",[m
+[31m-            "signing_protocol": "sigv4"[m
+[31m-          },[m
+[31m-          "sensitive_attributes": [],[m
+[31m-          "identity_schema_version": 0,[m
+[31m-          "private": "bnVsbA=="[m
+[31m-        }[m
+[31m-      ][m
+[31m-    },[m
+[31m-    {[m
+[31m-      "module": "module.route53",[m
+[31m-      "mode": "data",[m
+[31m-      "type": "aws_route53_zone",[m
+[31m-      "name": "hosted",[m
+[31m-      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",[m
+[31m-      "instances": [[m
+[31m-        {[m
+[31m-          "schema_version": 0,[m
+[31m-          "attributes": {[m
+[31m-            "arn": "arn:aws:route53:::hostedzone/Z0343085149CPP2WJW1GQ",[m
+[31m-            "caller_reference": "fad2b279-efbe-4d93-9d9e-2129a1dbfa71",[m
+[31m-            "comment": "",[m
+[31m-            "id": "Z0343085149CPP2WJW1GQ",[m
+[31m-            "linked_service_description": null,[m
+[31m-            "linked_service_principal": null,[m
+[31m-            "name": "thedevlearn.site",[m
+[31m-            "name_servers": [[m
+[31m-              "ns-92.awsdns-11.com",[m
+[31m-              "ns-1342.awsdns-39.org",[m
+[31m-              "ns-2044.awsdns-63.co.uk",[m
+[31m-              "ns-655.awsdns-17.net"[m
+[31m-            ],[m
+[31m-            "primary_name_server": "ns-92.awsdns-11.com",[m
+[31m-            "private_zone": false,[m
+[31m-            "resource_record_set_count": 3,[m
+[31m-            "tags": {},[m
+[31m-            "vpc_id": null,[m
+[31m-            "zone_id": "Z0343085149CPP2WJW1GQ"[m
+[31m-          },[m
+[31m-          "sensitive_attributes": [],[m
+[31m-          "identity_schema_version": 0[m
+[31m-        }[m
+[31m-      ][m
+[31m-    },[m
+[31m-    {[m
+[31m-      "module": "module.route53",[m
+[31m-      "mode": "managed",[m
+[31m-      "type": "aws_acm_certificate_validation",[m
+[31m-      "name": "validate-cert",[m
+[31m-      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",[m
+[31m-      "instances": [[m
+[31m-        {[m
+[31m-          "schema_version": 0,[m
+[31m-          "attributes": {[m
+[31m-            "certificate_arn": "arn:aws:acm:us-east-1:430118849545:certificate/316c9af0-7156-425a-8c3b-6909da1c0410",[m
+[31m-            "id": "2025-10-26 08:37:08.121 +0000 UTC",[m
+[31m-            "region": "us-east-1",[m
+[31m-            "timeouts": null,[m
+[31m-            "validation_record_fqdns": [[m
+[31m-              "_436124d3acab893d9a9d2dcee8223c4e.thedevlearn.site",[m
+[31m-              "_c818e4925cba37fe27c2f5b02d632702.www.thedevlearn.site"[m
+[31m-            ][m
+[31m-          },[m
+[31m-          "sensitive_attributes": [],[m
+[31m-          "identity_schema_version": 0,[m
+[31m-          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo0NTAwMDAwMDAwMDAwfX0=",[m
+[31m-          "dependencies": [[m
+[31m-            "module.acm.aws_acm_certificate.cert",[m
+[31m-            "module.route53.aws_route53_record.cert_validation",[m
+[31m-            "module.route53.data.aws_route53_zone.hosted"[m
+[31m-          ][m
+[31m-        }[m
+[31m-      ][m
+[31m-    },[m
+[31m-    {[m
+[31m-      "module": "module.route53",[m
+[31m-      "mode": "managed",[m
+[31m-      "type": "aws_route53_record",[m
+[31m-      "name": "cdn_domain_name",[m
+[31m-      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",[m
+[31m-      "instances": [[m
+[31m-        {[m
+[31m-          "schema_version": 2,[m
+[31m-          "attributes": {[m
+[31m-            "alias": [[m
+[31m-              {[m
+[31m-                "evaluate_target_health": false,[m
+[31m-                "name": "d1vbiob8grzucz.cloudfront.net",[m
+[31m-                "zone_id": "Z2FDTNDATAQYW2"[m
+[31m-              }[m
+[31m-            ],[m
+[31m-            "allow_overwrite": null,[m
+[31m-            "cidr_routing_policy": [],[m
+[31m-            "failover_routing_policy": [],[m
+[31m-            "fqdn": "thedevlearn.site",[m
+[31m-            "geolocation_routing_policy": [],[m
+[31m-            "geoproximity_routing_policy": [],[m
+[31m-            "health_check_id": "",[m
+[31m-            "id": "Z0343085149CPP2WJW1GQ_thedevlearn.site_A",[m
+[31m-            "latency_routing_policy": [],[m
+[31m-            "multivalue_answer_routing_policy": false,[m
+[31m-            "name": "thedevlearn.site",[m
+[31m-            "records": null,[m
+[31m-            "set_identifier": "",[m
+[31m-            "timeouts": null,[m
+[31m-            "ttl": 0,[m
+[31m-            "type": "A",[m
+[31m-            "weighted_routing_policy": [],[m
+[31m-            "zone_id": "Z0343085149CPP2WJW1GQ"[m
+[31m-          },[m
+[31m-          "sensitive_attributes": [],[m
+[31m-          "identity_schema_version": 0,[m
+[31m-          "identity": {[m
+[31m-            "account_id": "430118849545",[m
+[31m-            "name": "thedevlearn.site",[m
+[31m-            "set_identifier": null,[m
+[31m-            "type": "A",[m
+[31m-            "zone_id": "Z0343085149CPP2WJW1GQ"[m
+[31m-          },[m
+[31m-          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjoxODAwMDAwMDAwMDAwLCJkZWxldGUiOjE4MDAwMDAwMDAwMDAsInVwZGF0ZSI6MTgwMDAwMDAwMDAwMH0sInNjaGVtYV92ZXJzaW9uIjoiMiJ9",[m
+[31m-          "dependencies": [[m
+[31m-            "module.acm.aws_acm_certificate.cert",[m
+[31m-            "module.cloudfront.aws_cloudfront_distribution.s3_distribution_cdn",[m
+[31m-            "module.cloudfront.aws_cloudfront_origin_access_control.s3_origin",[m
+[31m-            "module.route53.data.aws_route53_zone.hosted",[m
+[31m-            "module.s3_bucket.aws_s3_bucket.static_web_bucket"[m
+[31m-          ][m
+[31m-        }[m
+[31m-      ][m
+[31m-    },[m
+[31m-    {[m
+[31m-      "module": "module.route53",[m
+[31m-      "mode": "managed",[m
+[31m-      "type": "aws_route53_record",[m
+[31m-      "name": "cert_validation",[m
+[31m-      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",[m
+[31m-      "instances": [[m
+[31m-        {[m
+[31m-          "index_key": "thedevlearn.site",[m
+[31m-          "schema_version": 2,[m
+[31m-          "attributes": {[m
+[31m-            "alias": [],[m
+[31m-            "allow_overwrite": true,[m
+[31m-            "cidr_routing_policy": [],[m
+[31m-            "failover_routing_policy": [],[m
+[31m-            "fqdn": "_436124d3acab893d9a9d2dcee8223c4e.thedevlearn.site",[m
+[31m-            "geolocation_routing_policy": [],[m
+[31m-            "geoproximity_routing_policy": [],[m
+[31m-            "health_check_id": "",[m
+[31m-            "id": "Z0343085149CPP2WJW1GQ__436124d3acab893d9a9d2dcee8223c4e.thedevlearn.site._CNAME",[m
+[31m-            "latency_routing_policy": [],[m
+[31m-            "multivalue_answer_routing_policy": false,[m
+[31m-            "name": "_436124d3acab893d9a9d2dcee8223c4e.thedevlearn.site",[m
+[31m-            "records": [[m
+[31m-              "_7087d6bf16af5608970d0f2db43a1426.zfyfvmchrl.acm-validations.aws."[m
+[31m-            ],[m
+[31m-            "set_identifier": "",[m
+[31m-            "timeouts": null,[m
+[31m-            "ttl": 60,[m
+[31m-            "type": "CNAME",[m
+[31m-            "weighted_routing_policy": [],[m
+[31m-            "zone_id": "Z0343085149CPP2WJW1GQ"[m
+[31m-          },[m
+[31m-          "sensitive_attributes": [],[m
+[31m-          "identity_schema_version": 0,[m
+[31m-          "identity": {[m
+[31m-            "account_id": "430118849545",[m
+[31m-            "name": "_436124d3acab893d9a9d2dcee8223c4e.thedevlearn.site.",[m
+[31m-            "set_identifier": null,[m
+[31m-            "type": "CNAME",[m
+[31m-            "zone_id": "Z0343085149CPP2WJW1GQ"[m
+[31m-          },[m
+[31m-          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjoxODAwMDAwMDAwMDAwLCJkZWxldGUiOjE4MDAwMDAwMDAwMDAsInVwZGF0ZSI6MTgwMDAwMDAwMDAwMH0sInNjaGVtYV92ZXJzaW9uIjoiMiJ9",[m
+[31m-          "dependencies": [[m
+[31m-            "module.acm.aws_acm_certificate.cert",[m
+[31m-            "module.route53.data.aws_route53_zone.hosted"[m
+[31m-          ][m
+[31m-        },[m
+[31m-        {[m
+[31m-          "index_key": "www.thedevlearn.site",[m
+[31m-          "schema_version": 2,[m
+[31m-          "attributes": {[m
+[31m-            "alias": [],[m
+[31m-            "allow_overwrite": true,[m
+[31m-            "cidr_routing_policy": [],[m
+[31m-            "failover_routing_policy": [],[m
+[31m-            "fqdn": "_c818e4925cba37fe27c2f5b02d632702.www.thedevlearn.site",[m
+[31m-            "geolocation_routing_policy": [],[m
+[31m-            "geoproximity_routing_policy": [],[m
+[31m-            "health_check_id": "",[m
+[31m-            "id": "Z0343085149CPP2WJW1GQ__c818e4925cba37fe27c2f5b02d632702.www.thedevlearn.site._CNAME",[m
+[31m-            "latency_routing_policy": [],[m
+[31m-            "multivalue_answer_routing_policy": false,[m
+[31m-            "name": "_c818e4925cba37fe27c2f5b02d632702.www.thedevlearn.site",[m
+[31m-            "records": [[m
+[31m-              "_2caee9bf7f053e12ffb6d6e7a6b3e02d.xlfgrmvvlj.acm-validations.aws."[m
+[31m-            ],[m
+[31m-            "set_identifier": "",[m
+[31m-            "timeouts": null,[m
+[31m-            "ttl": 60,[m
+[31m-            "type": "CNAME",[m
+[31m-            "weighted_routing_policy": [],[m
+[31m-            "zone_id": "Z0343085149CPP2WJW1GQ"[m
+[31m-          },[m
+[31m-          "sensitive_attributes": [],[m
+[31m-          "identity_schema_version": 0,[m
+[31m-          "identity": {[m
+[31m-            "account_id": "430118849545",[m
+[31m-            "name": "_c818e4925cba37fe27c2f5b02d632702.www.thedevlearn.site.",[m
+[31m-            "set_identifier": null,[m
+[31m-            "type": "CNAME",[m
+[31m-            "zone_id": "Z0343085149CPP2WJW1GQ"[m
+[31m-          },[m
+[31m-          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjoxODAwMDAwMDAwMDAwLCJkZWxldGUiOjE4MDAwMDAwMDAwMDAsInVwZGF0ZSI6MTgwMDAwMDAwMDAwMH0sInNjaGVtYV92ZXJzaW9uIjoiMiJ9",[m
+[31m-          "dependencies": [[m
+[31m-            "module.acm.aws_acm_certificate.cert",[m
+[31m-            "module.route53.data.aws_route53_zone.hosted"[m
+[31m-          ][m
+[31m-        }[m
+[31m-      ][m
+[31m-    },[m
+[31m-    {[m
+[31m-      "module": "module.s3_bucket",[m
+[31m-      "mode": "managed",[m
+[31m-      "type": "aws_s3_bucket",[m
+[31m-      "name": "static_web_bucket",[m
+[31m-      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",[m
+[31m-      "instances": [[m
+[31m-        {[m
+[31m-          "schema_version": 0,[m
+[31m-          "attributes": {[m
+[31m-            "acceleration_status": "",[m
+[31m-            "acl": null,[m
+[31m-            "arn": "arn:aws:s3:::thedevlearn.site",[m
+[31m-            "bucket": "thedevlearn.site",[m
+[31m-            "bucket_domain_name": "thedevlearn.site.s3.amazonaws.com",[m
+[31m-            "bucket_prefix": "",[m
+[31m-            "bucket_region": "us-east-1",[m
+[31m-            "bucket_regional_domain_name": "thedevlearn.site.s3.us-east-1.amazonaws.com",[m
+[31m-            "cors_rule": [],[m
+[31m-            "force_destroy": false,[m
+[31m-            "grant": [[m
+[31m-              {[m
+[31m-                "id": "326a1bf8b5f236caf1db2a841089bd61f867a73a5a88be555d52fb888f18f89e",[m
+[31m-                "permissions": [[m
+[31m-                  "FULL_CONTROL"[m
+[31m-                ],[m
+[31m-                "type": "CanonicalUser",[m
+[31m-                "uri": ""[m
+[31m-              }[m
+[31m-            ],[m
+[31m-            "hosted_zone_id": "Z3AQBSTGFYJSTF",[m
+[31m-            "id": "thedevlearn.site",[m
+[31m-            "lifecycle_rule": [],[m
+[31m-            "logging": [],[m
+[31m-            "object_lock_configuration": [],[m
+[31m-            "object_lock_enabled": false,[m
+[31m-            "policy": "{\"Statement\":[{\"Action\":\"s3:GetObject\",\"Condition\":{\"StringLike\":{\"aws:UserAgent\":\"Amazon CloudFront\"}},\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"cloudfront.amazonaws.com\"},\"Resource\":\"arn:aws:s3:::thedevlearn.site/*\",\"Sid\":\"AllowCloudFrontServicePrincipal\"}],\"Version\":\"2012-10-17\"}",[m
+[31m-            "region": "us-east-1",[m
+[31m-            "replication_configuration": [],[m
+[31m-            "request_payer": "BucketOwner",[m
+[31m-            "server_side_encryption_configuration": [[m
+[31m-              {[m
+[31m-                "rule": [[m
+[31m-                  {[m
+[31m-                    "apply_server_side_encryption_by_default": [[m
+[31m-                      {[m
+[31m-                        "kms_master_key_id": "",[m
+[31m-                        "sse_algorithm": "AES256"[m
+[31m-                      }[m
+[31m-                    ],[m
+[31m-                    "bucket_key_enabled": false[m
+[31m-                  }[m
+[31m-                ][m
+[31m-              }[m
+[31m-            ],[m
+[31m-            "tags": {[m
+[31m-              "Environment": "Dev",[m
+[31m-              "Name": "My bucket"[m
+[31m-            },[m
+[31m-            "tags_all": {[m
+[31m-              "Environment": "Dev",[m
+[31m-              "Name": "My bucket"[m
+[31m-            },[m
+[31m-            "timeouts": null,[m
+[31m-            "versioning": [[m
+[31m-              {[m
+[31m-                "enabled": false,[m
+[31m-                "mfa_delete": false[m
+[31m-              }[m
+[31m-            ],[m
+[31m-            "website": [],[m
+[31m-            "website_domain": null,[m
+[31m-            "website_endpoint": null[m
+[31m-          },[m
+[31m-          "sensitive_attributes": [],[m
+[31m-          "identity_schema_version": 0,[m
+[31m-          "identity": {[m
+[31m-            "account_id": "430118849545",[m
+[31m-            "bucket": "thedevlearn.site",[m
+[31m-            "region": "us-east-1"[m
+[31m-          },[m
+[31m-          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjoxMjAwMDAwMDAwMDAwLCJkZWxldGUiOjM2MDAwMDAwMDAwMDAsInJlYWQiOjEyMDAwMDAwMDAwMDAsInVwZGF0ZSI6MTIwMDAwMDAwMDAwMH19"[m
+[31m-        }[m
+[31m-      ][m
+[31m-    },[m
+[31m-    {[m
+[31m-      "module": "module.s3_bucket",[m
+[31m-      "mode": "managed",[m
+[31m-      "type": "aws_s3_bucket_policy",[m
+[31m-      "name": "cloudfront-oac-policy",[m
+[31m-      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",[m
+[31m-      "instances": [[m
+[31m-        {[m
+[31m-          "schema_version": 0,[m
+[31m-          "attributes": {[m
+[31m-            "bucket": "thedevlearn.site",[m
+[31m-            "id": "thedevlearn.site",[m
+[31m-            "policy": "{\"Statement\":[{\"Action\":\"s3:GetObject\",\"Condition\":{\"StringLike\":{\"aws:UserAgent\":\"Amazon CloudFront\"}},\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"cloudfront.amazonaws.com\"},\"Resource\":\"arn:aws:s3:::thedevlearn.site/*\",\"Sid\":\"AllowCloudFrontServicePrincipal\"}],\"Version\":\"2012-10-17\"}",[m
+[31m-            "region": "us-east-1"[m
+[31m-          },[m
+[31m-          "sensitive_attributes": [],[m
+[31m-          "identity_schema_version": 0,[m
+[31m-          "identity": {[m
+[31m-            "account_id": "430118849545",
