@@ -26,4 +26,7 @@ It includes the following key components:
 <img width="882" height="547" alt="image" src="https://github.com/varshithakjayappa/static-website-hosting/blob/main/website/deployed-website.png
 " />
 
-(https://github.com/varshithakjayappa/static-website-hosting/blob/main/website/deployed-website.png)
+https://github.com/varshithakjayappa/static-website-hosting/blob/main/website/deployed-website.png
+![image](https://github.com/varshithakjayappa/static-website-hosting/blob/main/website/deployed-website.png
+)
+
