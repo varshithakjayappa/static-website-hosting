@@ -1,20 +1,23 @@
-Project: Automated Static Website Hosting with AWS and Terraform
+# 🌐 Static Website Hosting on AWS using Terraform
 
-Overview:
-Built and deployed a fully automated static website hosting infrastructure for thedevlearn.site using Terraform. The setup included an S3 bucket for hosting, CloudFront for CDN, Route53 for DNS, and ACM for SSL certificate management.
+A fully automated **static website hosting** setup built with **Terraform** and **AWS**.  
+This project provisions an end-to-end infrastructure for hosting a static website (e.g., `thedevlearn.site`) using **S3**, **CloudFront**, **Route53**, and **ACM**.
 
-Key Components & Tools:
+---
 
-Terraform: Infrastructure as Code to provision and manage AWS resources.
+## 🚀 Project Overview
 
-AWS Services:
+This project demonstrates Infrastructure as Code (IaC) using **Terraform** to deploy a **secure, globally distributed static website** on AWS.  
+It includes the following key components:
 
-S3 – hosted static website files.
+- **S3 Bucket** – Hosts static website content.
+- **CloudFront (CDN)** – Distributes content globally with HTTPS and low latency.
+- **Route53** – Manages the custom domain and DNS records.
+- **ACM (AWS Certificate Manager)** – Provides SSL/TLS certificates for secure HTTPS.
+- **Terraform Modules** – Modular design for reusability and clarity.
 
-CloudFront – distributed content globally with HTTPS.
+---
 
-ACM (AWS Certificate Manager) – managed SSL/TLS certificates for secure connections.
+## 🧱 Architecture Diagram
 
-Route53 – handled custom domain and DNS records.
-
-Providers: Configured multiple AWS providers (eu-central-1 and us
+<img width="882" height="547" alt="image" src="https://github.com/user-attachments/assets/a498f5d8-fad8-436f-9906-2ac60dba75d6" />
